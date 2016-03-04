@@ -1,8 +1,28 @@
 '''
 Created on Sep 20, 2015
 
-@author: Cuyler
+@author: Cuyler Quint <deanquint@gmail.com>
+
+
+Tic Tac Toe
+    Requirements
+        -python version 1.7
+        -pygame version 1.9
+
+    Description:
+        This is a clone of the famous tic tac Toe
+        with implemetation of a computer to play agaisnt
+        at three different levels.
+
+        level 1: random moves
+        level 2: blocks winning moves
+        level 3: level 2 and attemps to win
+
+        command line arguments are very straigt forward. Enjoy!
+
 '''
+
+
 
 import random
 import pygame
@@ -38,6 +58,9 @@ class Game:
         print(self.Difficulty)
 
     def setGame(self):
+        '''
+        Sets the Game for starting play
+        '''
         self.TTTbox[0] = '1'
         self.TTTbox[1] = '2'
         self.TTTbox[2] = '3'
@@ -53,6 +76,9 @@ class Game:
 
 
     def printBox(self,box):
+        '''
+        prints the updated board with user and computer moves
+        '''
         print(' ' + box[0] + ' | ' + box[1] + ' | ' + box[2])
         print('-----------')
         print(' ' + box[3] + ' | ' + box[4] + ' | ' + box[5])
@@ -61,24 +87,33 @@ class Game:
 
 
     def copyBox(self,box):
+        '''
+        copys a temporary board and returns that board
+        '''
         copyBox = []
-
         for i in box:
             copyBox.append(i)
         return copyBox
 
     def userPick(self,TTTbox,Char):
+        '''
+        goes throught a users turn and promts them to make
+        a move and updates ther choice if valid
+        '''
         print('Pick a avaible space')
         pick = input()
         if (self.openSpace(TTTbox, pick) == False ):
             print('spot already taken, pick again')
             self.printBox(TTTbox)
             self.userPick(TTTbox,Char)
-
         self.paintBox(TTTbox,Char , pick)
         return pick
 
     def getPossibleMoves(self,box):
+        '''
+        determines all possible moves that a user
+        can pick from and returns array of them
+        '''
         pMoves = [1,2,3,4,5,6,7,8,9]
         for i in range(1,10):
             if ((box[i-1] == 'X') or (box[i-1] == 'O')):
@@ -87,6 +122,10 @@ class Game:
 
 
     def getWinningMove(self,box):
+        '''
+        copys a box for all possible moves
+        and test if a winning move can be made
+        '''
         for i in range(1,10):
             cBox = self.copyBox(box)
             if (self.openSpace(cBox, i) == True):
@@ -97,6 +136,11 @@ class Game:
 
 
     def getBlockingMove(self,box):
+        '''
+        copys a box for all possible moves
+        and tests if a blocking move can be made
+        '''
+
         for i in range(1,10):
             cBox = self.copyBox(box)
             if (self.openSpace(cBox, i) == True):
@@ -106,6 +150,9 @@ class Game:
         return 0
 
     def openSpace(self,TTTbox, move):
+        '''
+        determines if a positon is a open space or not
+        '''
         temp = move - 1
         if ((TTTbox[temp] ==  'O') or (TTTbox[temp] ==  'X')):
             return False
@@ -114,6 +161,10 @@ class Game:
 
 
     def getPendingMove(self,box):
+        '''
+        logic to place best move by computer in
+        early game that was not chosen by human
+        '''
         if((box[5] == 'O') and((box[1] == 'O') or (box[3] == 'O') or (box[7] == 'O') or (box[9] == 'O'))):
             for i in range(1,9):
                 if (i == 2):  # take middle
@@ -154,6 +205,11 @@ class Game:
 
 
     def makeAIMove(self,box,char,difficulty):
+        '''
+        depending on the computers difficulty, this function decides
+        what type of move the computer will make based of the
+        known played postions.
+        '''
         if self.Difficulty == 1:
             pMoves = self.getPossibleMoves(box)
             move = random.choice(pMoves)
@@ -182,13 +238,22 @@ class Game:
                     self.paintBox(box, char, bMove)
             else:
                 self.paintBox(box, char, wMove)
+
+
     def fullBox(self,box):
+        '''
+        determines if a game has all postions filled
+        '''
         for i in range(1,10):
             if (self.openSpace(box, i)):
                 return False
             return True
 
     def paintBox(self,box, letter, move):
+        '''
+        paints the desginated postion to the
+        board with the correct player letter
+        '''
 
         if (move == 9):
             box[8] = letter
@@ -196,6 +261,9 @@ class Game:
         box[temp] = letter
 
     def Win(self,box,char):
+        '''
+        checks made to see if a player has won
+        '''
         if((box[0] == char and box[1] == char and box[2] == char) or
         (box[3] == char and box[4] == char and box[5] == char ) or
         (box[6] == char and box[7] == char and box[8] == char ) or #hori
