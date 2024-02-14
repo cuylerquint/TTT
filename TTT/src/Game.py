@@ -21,11 +21,8 @@ Tic Tac Toe
         command line arguments are very straigt forward. Enjoy!
 
 '''
-
-
-
-import random
 import pygame
+import secrets
 
 class Player:
 
@@ -212,13 +209,13 @@ class Game:
         '''
         if self.Difficulty == 1:
             pMoves = self.getPossibleMoves(box)
-            move = random.choice(pMoves)
+            move = secrets.SystemRandom().choice(pMoves)
             self.paintBox(box, char, move)
         elif self.Difficulty == 2 :#see if can finsish, make random
             wMove = self.getWinningMove(box)
             if(wMove == 0):
                 pMoves = self.getPossibleMoves(box)
-                move = random.choice(pMoves)
+                move = secrets.SystemRandom().choice(pMoves)
                 self.paintBox(box, char, move)
             else:
                 self.paintBox(box, char, wMove)
@@ -230,7 +227,7 @@ class Game:
                     pendingMove = self.getPendingMove(box)
                     if(pendingMove == 0):
                         pMoves = self.getPossibleMoves(box)
-                        move = random.choice(pMoves)
+                        move = secrets.SystemRandom().choice(pMoves)
                         self.paintBox(box, char, move)
                     else:
                         self.paintBox(box, char, pendingMove)
