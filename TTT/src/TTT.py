@@ -39,7 +39,7 @@ def playAgain():
         play()
 
     elif playAgain == 'n':
-        SystemExit
+        raise SystemExit
 
 def play():
     """
